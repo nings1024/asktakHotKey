@@ -3,7 +3,7 @@
 myGui := Gui("+AlwaysOnTop", "我的GUI程序")
 myGui.AddButton("h20", "刷新").OnEvent("Click", RestartSelf)
 anyAskTao()
-myGui.Show()
+myGui.Show('x' A_ScreenWidth-400 ' y' A_ScreenHeight/2-200)
 
 RestartSelf(*) {
     Run A_ScriptFullPath  ; 重新运行当前脚本
