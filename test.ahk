@@ -150,7 +150,9 @@ Avatar(wnd_id,*) {
 }
 
 getX_Y(sel,key,&x,&y){
+    wns:=WinGetList('ahk_class AtTabWnd')
+    WinGetClientPos(,,&w,&h,'ahk_id' wns[1])
     t:=IniRead('pos.ini',sel,key)
-    x:=Number(StrSplit(t,' ')[1])
-    y:=Number(StrSplit(t,' ')[2])
+    x:=Number(StrSplit(t,' ')[1])*w/1038
+    y:=Number(StrSplit(t,' ')[2])*h/847
 }
