@@ -1,6 +1,6 @@
 #SingleInstance Force
 #Requires AutoHotkey v2.0
-t:='附件 全部领取'
+t:='福利 福利'
 pos:='133'
 wns:=WinGetList('ahk_class AtTabWnd')
 WinActivate(wns[1])

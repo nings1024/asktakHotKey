@@ -95,13 +95,8 @@ cleanWindow(wnd_id,*) {
 }
 ; 定义函数 签到奖励 功能
 signReward(wnd_id,*) {
-    t:=IniRead('pos.ini','福利','福利')
-    fx:=Number(StrSplit(t,' ')[1])
-    fy:=Number(StrSplit(t,' ')[2])
-    t:=IniRead('pos.ini','福利','一键领取')
-    lx:=Number(StrSplit(t,' ')[1])
-    ly:=Number(StrSplit(t,' ')[2])
     WinActivate('ahk_id' wnd_id)
+    getX_Y("福利","福利",&fx,&fy)
     MouseMove(fx,fy)
     Sleep 500
     loop 5 {
@@ -111,6 +106,7 @@ signReward(wnd_id,*) {
         MouseClick()
     }
     WinActivate('ahk_id' wnd_id)
+    getX_Y("福利","一键领取",&lx,&ly)
     MouseMove(lx,ly)
     Sleep 500
     loop 5 {
@@ -178,8 +174,10 @@ getAttachment(wnd_id,*) {
 
 getX_Y(sel,key,&x,&y){
     wns:=WinGetList('ahk_class AtTabWnd')
-    WinGetClientPos(,,&w,&h,'ahk_id' wns[1])
+    wnd_id:=wns[1]
+    asktao_id:=WinGetControlsHwnd('ahk_id' wnd_id)[1]
+    WinGetClientPos(, , &w, &h, "ahk_id " asktao_id )
     t:=IniRead('pos.ini',sel,key)
-    x:=Number(StrSplit(t,' ')[1])*w/1038
-    y:=Number(StrSplit(t,' ')[2])*h/847
+    x:=Number(StrSplit(t,' ')[1])*w/1024
+    y:=Number(StrSplit(t,' ')[2])*h/768
 }
