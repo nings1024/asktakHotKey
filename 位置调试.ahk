@@ -5,7 +5,7 @@ pos:='133'
 wns:=WinGetList('ahk_class AtTabWnd')
 WinActivate(wns[1])
 getX_Y(StrSplit(t,' ')[1],StrSplit(t,' ')[2],&x,&y)
-MouseMove(x,y)
+MouseMove(x*1297/1038,y*1058/847)
 
 
 
