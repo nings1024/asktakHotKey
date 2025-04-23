@@ -19,6 +19,7 @@ anyAskTao() {
         myGui.Add('Button',,'清理窗口').OnEvent('Click', cleanWindow.Bind(wns[A_Index]))
         myGui.Add('Button',,'签到奖励').OnEvent('Click', signReward.Bind(wns[A_Index]))
         myGui.Add('Button',,'识界修炼').OnEvent('Click', Avatar.Bind(wns[A_Index]))
+        myGui.Add('Button',,'领取附件').OnEvent('Click', getAttachment.Bind(wns[A_Index]))
         ; myGui.Add('Button',,'')
     }   
 }
@@ -138,6 +139,32 @@ Avatar(wnd_id,*) {
     }   
     WinActivate('ahk_id' wnd_id)
     getX_Y("识界","修炼",&lx,&ly)
+    MouseMove(lx,ly)
+    loop 5{
+        MouseClick()
+        Sleep 200
+        Send '{Enter}'
+        Sleep 200
+        Send '^{Tab}'
+        Sleep 500
+    }
+}
+; 定义函数 领取附件 功能
+getAttachment(wnd_id,*) {
+    WinActivate('ahk_id' wnd_id)
+    Sleep 200
+    getX_Y("附件","邮箱",&lx,&ly)
+    MouseMove(lx,ly)
+    loop 5{
+        MouseClick()
+        Sleep 200
+        Send '{Enter}'
+        Sleep 200
+        Send '^{Tab}'
+        Sleep 500
+    }
+    WinActivate('ahk_id' wnd_id)
+    getX_Y("附件","全部领取",&lx,&ly)
     MouseMove(lx,ly)
     loop 5{
         MouseClick()
