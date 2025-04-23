@@ -37,15 +37,15 @@ activeReward(wnd_id,*) {
         Send '{Escape}'
         Sleep 500
     }
-    Exit()
     WinActivate('ahk_id' wnd_id)
     ; 第一个或活跃奖励位置
-    MouseMove(835,690)
+    getX_Y('活跃','活跃',&lx,&ly)
+    MouseMove(lx,ly)
     Sleep 500
-    loop 5{
+    loop 6{
         loop 5
         {
-            ; MouseClick()
+            MouseClick()
             Sleep 200
             Send '^{Tab}'
             Sleep 500
@@ -94,8 +94,14 @@ cleanWindow(wnd_id,*) {
 }
 ; 定义函数 签到奖励 功能
 signReward(wnd_id,*) {
+    t:=IniRead('pos.ini','福利','福利')
+    fx:=Number(StrSplit(t,' ')[1])
+    fy:=Number(StrSplit(t,' ')[2])
+    t:=IniRead('pos.ini','福利','一键领取')
+    lx:=Number(StrSplit(t,' ')[1])
+    ly:=Number(StrSplit(t,' ')[2])
     WinActivate('ahk_id' wnd_id)
-    MouseMove(906,204)
+    MouseMove(fx,fy)
     Sleep 500
     loop 5 {
         Sleep 200
@@ -104,7 +110,7 @@ signReward(wnd_id,*) {
         MouseClick()
     }
     WinActivate('ahk_id' wnd_id)
-    MouseMove(835,690)
+    MouseMove(lx,ly)
     Sleep 500
     loop 5 {
         Sleep 200
@@ -118,7 +124,8 @@ signReward(wnd_id,*) {
 Avatar(wnd_id,*) {
     WinActivate('ahk_id' wnd_id)
     Sleep 200
-    MouseMove(277,343)
+    getX_Y("识界","识界",&lx,&ly)
+    MouseMove(lx,ly)
     MouseClick()
     Sleep 200
     loop 5 {
@@ -129,4 +136,21 @@ Avatar(wnd_id,*) {
         MouseClick()
         Sleep 500
     }   
+    WinActivate('ahk_id' wnd_id)
+    getX_Y("识界","修炼",&lx,&ly)
+    MouseMove(lx,ly)
+    loop 5{
+        MouseClick()
+        Sleep 200
+        Send '{Enter}'
+        Sleep 200
+        Send '^{Tab}'
+        Sleep 500
+    }
+}
+
+getX_Y(sel,key,&x,&y){
+    t:=IniRead('pos.ini',sel,key)
+    x:=Number(StrSplit(t,' ')[1])
+    y:=Number(StrSplit(t,' ')[2])
 }
