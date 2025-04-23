@@ -14,7 +14,7 @@ anyAskTao() {
     wns:=WinGetList('ahk_class AtTabWnd')
     loop wns.Length {
         myGui.Add('Text',A_Index==1?'':'ys y32',StrSplit(WinGetTitle('ahk_id' wns[A_Index]),'[')[1])
-        myGui.Add('Button',,'活跃奖励')
+        myGui.Add('Button',,'活跃奖励').OnEvent('Click', activeReward.Bind(wns[A_Index]))
         myGui.Add('Button',,'自闭模式').OnEvent('Click', autisticMode.Bind(wns[A_Index]))
         myGui.Add('Button',,'清理窗口').OnEvent('Click', cleanWindow.Bind(wns[A_Index]))
         myGui.Add('Button',,'签到奖励').OnEvent('Click', signReward.Bind(wns[A_Index]))
@@ -22,6 +22,41 @@ anyAskTao() {
         ; myGui.Add('Button',,'')
     }   
 }
+
+;定义函数 活跃奖励 功能
+activeReward(wnd_id,*) {
+    WinActivate('ahk_id' wnd_id)
+    Sleep 200
+    asktao_id:=WinGetControlsHwnd('ahk_id' wnd_id)[1]
+    WinActivate('ahk_id' asktao_id)
+    Sleep 500
+    loop 5 {
+        Sleep 200
+        Send '^{Tab}'
+        Sleep 500
+        Send '{Escape}'
+        Sleep 500
+    }
+    Exit()
+    WinActivate('ahk_id' wnd_id)
+    ; 第一个或活跃奖励位置
+    MouseMove(835,690)
+    Sleep 500
+    loop 5{
+        loop 5
+        {
+            ; MouseClick()
+            Sleep 200
+            Send '^{Tab}'
+            Sleep 500
+        }
+        WinActivate('ahk_id' wnd_id)
+        Sleep 500
+        MouseMove(60,0,,'R')
+        Sleep 500
+    }
+}
+
 
 ; 定义函数 自闭模式 功能
 autisticMode(wnd_id,*) {
