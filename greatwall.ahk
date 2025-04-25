@@ -128,7 +128,7 @@ startsWith(haystack, needle) {
 #HotIf WinActive("ahk_class SWT_Window0")
 #s:: {
     Send "^9"
-    Sleep 100
+    Sleep 300
     Send '长城生产'
     Sleep 500
     Send '{Down}'
@@ -139,7 +139,7 @@ startsWith(haystack, needle) {
 
 #u:: {
     Send "^9"
-    Sleep 100
+    Sleep 300
     Send '长城-uat'
     Sleep 500
     Send '{Down}'
