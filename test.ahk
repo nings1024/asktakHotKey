@@ -97,6 +97,7 @@ cleanWindow(wnd_id,*) {
 signReward(wnd_id,*) {
     WinActivate('ahk_id' wnd_id)
     getX_Y("福利","福利",&fx,&fy)
+    Sleep 500
     MouseMove(fx,fy)
     Sleep 500
     loop 5 {
