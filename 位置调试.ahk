@@ -2,42 +2,28 @@
 #Requires AutoHotkey v2.0
 
 getid(&wnd_id, &asktao_id)
-a()
-b()
-c()
 WinActivate(wnd_id)
-Sleep 500
-; MouseMove(420,710)
-MouseClick('Left',420,710)
+WinGetClientPos(,,&w,&h,'ahk_id ' wnd_id)
+response := HttpGet("http://127.0.0.1:8999?hwnd=721332&t=仙缘道人")
+goal:=StrSplit(response,' ')
+; MsgBox('相似度'  goal[1])
+; MsgBox('相似度'  goal[2])
+; MsgBox('相似度'  goal[3])
+ImageSearch(&x,&y,0,0,w,h, "C:\\pro\\aardio\\project\\服务端截图\\res\\仙缘道人.png")
+MouseMove(x,y)
 
-; 打开esc
-a() {
-    WinActivate('ahk_id ' asktao_id)
-    Sleep 100
-    Send '{Escape}'
-    Sleep 200
-
-}
-; 点击自动
-b() {
-    WinActivate('ahk_id ' wnd_id)
-    Sleep 300
-    MouseMove(360, 420) ; 自动位置
-    Sleep 200
-    MouseClick()
-    Sleep 500
-}
-; 点击单人
-c() {
-    WinActivate('ahk_id ' wnd_id)
-    Sleep 300
-    MouseMove(400, 205) ; 单人位置
-    Sleep 200
-    MouseClick()
-    Sleep 300
-}
 
 getid(&wnd_id, &asktao_id) {
     wnd_id := WinGetList('ahk_class AtTabWnd')[1]
     asktao_id := WinGetControlsHwnd('ahk_id ' wnd_id)[1]
 }
+
+
+; GET请求示例
+HttpGet(url) {
+    req := ComObject("MSXML2.XMLHTTP")
+    req.open("GET", url, false) ; 同步请求
+    req.send()
+    return req.responseText
+}
+
