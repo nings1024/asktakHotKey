@@ -147,5 +147,3 @@ startsWith(haystack, needle) {
     Send '{Space}'
     Send '{Enter}'
 }
-#HotIf 
-:*:p;::^v
