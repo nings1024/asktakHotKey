@@ -1,7 +1,11 @@
 #SingleInstance Force
 #Requires AutoHotkey v2.0
 #Include %A_ScriptDir%\JSON.ahk
-idmap:=Map()
+; 窗口hwnd集合
+idmap := Map()
+; 分辨率
+resolution := ''
+
 myGui := Gui("+AlwaysOnTop", "我的GUI程序")
 myGui.AddButton("h20", "重启").OnEvent("Click", RestartSelf)
 myGui.AddButton("h20 ys", "获取ID").OnEvent("Click", getAsktaoID)
@@ -23,7 +27,7 @@ getAsktaoID(*) {
         loop 5{
             Send '^{Tab}'
             hwnds.Set(WinGetControlsHwnd('ahk_id' wns[t])[1],1)
-            Sleep 300
+            Sleep 500
         }
         idmap.Set(wns[A_Index],hwnds)        
         Sleep 500
@@ -32,6 +36,13 @@ getAsktaoID(*) {
 
 
 anyAskTao() {
+    global resolution
+    wns := WinGetList('ahk_class AtTabWnd')
+    if resolution == '' 
+        if wns.Length > 0 {
+            WinGetClientPos(, , &w, &h, 'ahk_id' WinGetControlsHwnd('ahk_id' wns[1])[1])
+            resolution := w 'x' h
+        }
     wns:=WinGetList('ahk_class AtTabWnd')
     loop wns.Length {
         myGui.Add('Text',A_Index==1?'x0':'x80 ys y34',StrSplit(WinGetTitle('ahk_id' wns[A_Index]),'[')[1])
@@ -39,8 +50,47 @@ anyAskTao() {
         myGui.Add('Button',,'签到奖励').OnEvent('Click', signReward.Bind(wns[A_Index]))
         myGui.Add('Button',,'识界修炼').OnEvent('Click', Avatar.Bind(wns[A_Index]))
         myGui.Add('Button',,'领取附件').OnEvent('Click', getAttachment.Bind(wns[A_Index]))
+        myGui.Add('Button',,'单人任务').OnEvent('Click', Solotask.Bind(wns[A_Index]))
         myGui.Add('Button',,'Ctlr+B').OnEvent('Click',ClearWindoiw.Bind(wns[A_Index]) )
+        myGui.Add('Button',,'自闭模式').OnEvent('Click',Blockothers.Bind(wns[A_Index]) )
     }   
+}
+
+Solotask(wnd_id,*) {
+    Sendhttp(wnd_id,'ctrlb')
+    Sendhttp(wnd_id,'esc')
+    WinActivate('ahk_id ' wnd_id)
+    getX_Y("自动位置",&lx,&ly)
+    MouseMove(lx,ly)
+    loop 5{
+        MouseClick()
+        Sleep 500
+        Send '^{Tab}'
+        Sleep 500
+    }
+    WinActivate('ahk_id ' wnd_id)
+    getX_Y("单人位置",&lx,&ly)
+    MouseMove(lx,ly)
+    loop 5{
+        MouseClick()
+        Sleep 500
+        Send '^{Tab}'
+        Sleep 500
+    }
+    WinActivate('ahk_id ' wnd_id)
+    getX_Y("一键自动",&lx,&ly)
+    MouseMove(lx,ly)
+    loop 5{
+        MouseClick()
+        Sleep 500
+        Send '^{Tab}'
+        Sleep 500
+    }
+    Sendhttp(wnd_id,'ctrl1')
+}
+
+Blockothers(wnd_id,*) {
+    Sendhttp(wnd_id,'alt1')
 }
 
 ;定义函数 活跃奖励 功能
@@ -59,7 +109,7 @@ activeReward(wnd_id,*) {
     }
     WinActivate('ahk_id' wnd_id)
     ; 第一个或活跃奖励位置
-    getX_Y('活跃','活跃',&lx,&ly)
+    getX_Y('活跃位置',&lx,&ly)
     MouseMove(lx,ly)
     Sleep 500
     loop 6{
@@ -80,7 +130,7 @@ activeReward(wnd_id,*) {
 ; 定义函数 签到奖励 功能
 signReward(wnd_id,*) {
     WinActivate('ahk_id' wnd_id)
-    getX_Y("福利","福利",&fx,&fy)
+    getX_Y("签到位置",&fx,&fy)
     Sleep 500
     MouseMove(fx,fy)
     Sleep 500
@@ -91,7 +141,7 @@ signReward(wnd_id,*) {
         MouseClick()
     }
     WinActivate('ahk_id' wnd_id)
-    getX_Y("福利","一键领取",&lx,&ly)
+    getX_Y("签到领取",&lx,&ly)
     MouseMove(lx,ly)
     Sleep 500
     loop 5 {
@@ -106,7 +156,7 @@ signReward(wnd_id,*) {
 Avatar(wnd_id,*) {
     WinActivate('ahk_id' wnd_id)
     Sleep 200
-    getX_Y("识界","识界",&lx,&ly)
+    getX_Y("识界位置",&lx,&ly)
     MouseMove(lx,ly)
     MouseClick()
     Sleep 200
@@ -119,7 +169,7 @@ Avatar(wnd_id,*) {
         Sleep 500
     }   
     WinActivate('ahk_id' wnd_id)
-    getX_Y("识界","修炼",&lx,&ly)
+    getX_Y("识界修炼",&lx,&ly)
     MouseMove(lx,ly)
     loop 5{
         MouseClick()
@@ -132,20 +182,26 @@ Avatar(wnd_id,*) {
 }
 ; 
 ClearWindoiw(wnd_id,*) {
+    Sendhttp(wnd_id,'ctrlb')
+}
+Sendhttp(wnd_id,type){
     asktao_ids:=idmap.Get(wnd_id)
     url := "http://127.0.0.1:8999"
-    data := '{"name": "John", "age": 30}'
     whr := ComObject("WinHttp.WinHttpRequest.5.1")
     whr.Open("POST", url, true)
     whr.SetRequestHeader("Content-Type", "application/json")
-    whr.Send(Jxon_Dump(asktao_ids))
+    postdata:= Map()
+    postdata.Set('type',type)
+    postdata.Set('hwnds',asktao_ids)
+    whr.Send(Jxon_Dump(postdata))
     whr.WaitForResponse()
 }
+
 ; 定义函数 领取附件 功能
 getAttachment(wnd_id,*) {
     WinActivate('ahk_id' wnd_id)
     Sleep 200
-    getX_Y("附件","邮箱",&lx,&ly)
+    getX_Y("附件邮箱",&lx,&ly)
     MouseMove(lx,ly)
     loop 5{
         MouseClick()
@@ -156,7 +212,7 @@ getAttachment(wnd_id,*) {
         Sleep 500
     }
     WinActivate('ahk_id' wnd_id)
-    getX_Y("附件","全部领取",&lx,&ly)
+    getX_Y("附件领取",&lx,&ly)
     MouseMove(lx,ly)
     loop 5{
         MouseClick()
@@ -168,16 +224,11 @@ getAttachment(wnd_id,*) {
     }
 }
 
-getX_Y(sel,key,&x,&y){
-    wns:=WinGetList('ahk_class AtTabWnd')
-    wnd_id:=wns[1]
-    asktao_id:=WinGetControlsHwnd('ahk_id' wnd_id)[1]
-    WinGetClientPos(, , &w, &h, "ahk_id " asktao_id )
-    t:=IniRead('pos.ini',sel,key)
-    x:=Number(StrSplit(t,' ')[1])*w/1024
-    y:=Number(StrSplit(t,' ')[2])*h/768
+getX_Y( key, &x, &y) {
+    t := IniRead('a.ini', resolution, key)
+    x := Number(StrSplit(t, ' ')[1])
+    y := Number(StrSplit(t, ' ')[2])
 }
-
 
 
 #HotIf WinActive("ahk_class AtTabWnd") or WinActive("ahk_class AskTao")
@@ -188,7 +239,10 @@ XButton1:: {
 ; 关闭当前所有弹出项目
 XButton2:: {
     Send "{Esc}"
+    Sleep 200
     Send "^b"
+    Sleep 200
+    Send "{Ctrl up}"
 }
 ; 重置自动回合
 AppsKey:: {
@@ -205,3 +259,4 @@ AppsKey:: {
         Sleep 500
     }
 }
+
