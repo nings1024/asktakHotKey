@@ -10,7 +10,7 @@ myGui := Gui("+AlwaysOnTop", "我的GUI程序")
 myGui.AddButton("h20", "重启").OnEvent("Click", RestartSelf)
 myGui.AddButton("h20 ys", "获取ID").OnEvent("Click", getAsktaoID)
 anyAskTao()
-myGui.Show('x' A_ScreenWidth-400 ' y' A_ScreenHeight/2-200)
+myGui.Show('x' A_ScreenWidth-400 ' y' A_ScreenHeight/2-200 ' w300')
 
 RestartSelf(*) {
     Run A_ScriptFullPath  ; 重新运行当前脚本
@@ -51,14 +51,10 @@ anyAskTao() {
         myGui.Add('Button',,'识界修炼').OnEvent('Click', Avatar.Bind(wns[A_Index]))
         myGui.Add('Button',,'领取附件').OnEvent('Click', getAttachment.Bind(wns[A_Index]))
         myGui.Add('Button',,'单人任务').OnEvent('Click', Solotask.Bind(wns[A_Index]))
-        myGui.Add('Button',,'Ctlr+B').OnEvent('Click',ClearWindoiw.Bind(wns[A_Index]) )
-        myGui.Add('Button',,'自闭模式').OnEvent('Click',Blockothers.Bind(wns[A_Index]) )
     }   
 }
 
 Solotask(wnd_id,*) {
-    Sendhttp(wnd_id,'ctrlb')
-    Sendhttp(wnd_id,'esc')
     WinActivate('ahk_id ' wnd_id)
     getX_Y("自动位置",&lx,&ly)
     MouseMove(lx,ly)
@@ -86,7 +82,6 @@ Solotask(wnd_id,*) {
         Send '^{Tab}'
         Sleep 500
     }
-    Sendhttp(wnd_id,'ctrl1')
 }
 
 Blockothers(wnd_id,*) {
