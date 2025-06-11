@@ -254,4 +254,13 @@ AppsKey:: {
         Sleep 500
     }
 }
+/::{
+    getid(&wnd_id, &asktao_id)
+    WinActivate('ahk_id ' wnd_id)
+}
 
+
+getid(&wnd_id, &asktao_id) {
+    wnd_id := WinGetList('ahk_class AtTabWnd')[1]
+    asktao_id := WinGetControlsHwnd('ahk_id ' wnd_id)[1]
+}
