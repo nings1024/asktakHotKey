@@ -217,7 +217,7 @@ getAttachment(wnd_id, *) {
 LoginAssist(wnd_id, *) {
     WinActivate('ahk_id' wnd_id)
     Sleep 1000
-    loop 15 {
+    loop 17 {
         Send '{Enter}'
         Sleep 800
     }
