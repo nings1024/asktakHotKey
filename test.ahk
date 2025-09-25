@@ -65,10 +65,10 @@ anyAskTao() {
         myGui.Add('Text', A_Index == 1 ? 'x0' : 'x80 ys y34', StrSplit(WinGetTitle('ahk_id' wns[A_Index]), '[')[1])
         myGui.Add('Button', , '活跃奖励').OnEvent('Click', activeReward.Bind(wns[A_Index]))
         myGui.Add('Button', , '签到奖励').OnEvent('Click', signReward.Bind(wns[A_Index]))
-        myGui.Add('Button', , '识界修炼').OnEvent('Click', Avatar.Bind(wns[A_Index]))
         myGui.Add('Button', , '领取附件').OnEvent('Click', getAttachment.Bind(wns[A_Index]))
         myGui.Add('Button', , '单人任务').OnEvent('Click', Solotask.Bind(wns[A_Index]))
         myGui.Add('Button', , '登录辅助').OnEvent('Click', LoginAssist.Bind(wns[A_Index]))
+        myGui.Add('Button', , '加点修改').OnEvent('Click', ChangeAllocate.Bind(wns[A_Index]))
     }
 }
 
@@ -159,35 +159,6 @@ signReward(wnd_id, *) {
     }
 }
 
-; 定义函数 识界修炼 功能
-Avatar(wnd_id, *) {
-    WinActivate('ahk_id' wnd_id)
-    Sleep 200
-    getX_Y("识界位置", &lx, &ly)
-    MouseMove(lx, ly)
-    MouseClick()
-    Sleep 200
-    loop 5 {
-        Send '^{Tab}'
-        Sleep 500
-        Send '!c'
-        Sleep 200
-        MouseClick()
-        Sleep 500
-    }
-    WinActivate('ahk_id' wnd_id)
-    getX_Y("识界修炼", &lx, &ly)
-    MouseMove(lx, ly)
-    loop 5 {
-        MouseClick()
-        Sleep 200
-        Send '{Enter}'
-        Sleep 200
-        Send '^{Tab}'
-        Sleep 500
-    }
-}
-
 ; 定义函数 领取附件 功能
 getAttachment(wnd_id, *) {
     WinActivate('ahk_id' wnd_id)
@@ -214,15 +185,33 @@ getAttachment(wnd_id, *) {
         Sleep 500
     }
 }
+; 登录辅助
 LoginAssist(wnd_id, *) {
     WinActivate('ahk_id' wnd_id)
     Sleep 1000
-    loop 17 {
+    loop 20 {
         Send '{Enter}'
         Sleep 800
     }
 }
-
+; 更换加点方案
+ChangeAllocate(wnd_id, *) {
+    static currentPoint := "加点1"  ; 静态变量，保持状态
+    WinActivate('ahk_id' wnd_id)
+    getX_Y(currentPoint, &lx, &ly)
+    MouseMove(lx, ly)
+    Sleep 200
+    asktao_id := WinGetControlsHwnd('ahk_id' wnd_id)[1]
+    WinActivate('ahk_id' asktao_id)
+    Sleep 200
+    Send '^b'
+    Sleep 300
+    Send '!c'
+    Sleep 300
+    MouseClick()
+    ; 轮换加点位置
+    currentPoint := (currentPoint = "加点1") ? "加点2" : "加点1"
+}
 getX_Y(key, &x, &y) {
     t := IniRead('a.ini', resolution, key)
     x := Number(StrSplit(t, ' ')[1])
