@@ -189,9 +189,9 @@ getAttachment(wnd_id, *) {
 LoginAssist(wnd_id, *) {
     WinActivate('ahk_id' wnd_id)
     Sleep 1000
-    loop 20 {
+    loop 25 {
         Send '{Enter}'
-        Sleep 800
+        Sleep 500
     }
 }
 ; 更换加点方案
