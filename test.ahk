@@ -69,6 +69,7 @@ anyAskTao() {
         myGui.Add('Button', , '单人任务').OnEvent('Click', Solotask.Bind(wns[A_Index]))
         myGui.Add('Button', , '登录辅助').OnEvent('Click', LoginAssist.Bind(wns[A_Index]))
         myGui.Add('Button', , '加点修改').OnEvent('Click', ChangeAllocate.Bind(wns[A_Index]))
+        myGui.Add('Button', , '购买全民').OnEvent('Click', BuyUpgrade.Bind(wns[A_Index]))
     }
 }
 
@@ -189,7 +190,7 @@ getAttachment(wnd_id, *) {
 LoginAssist(wnd_id, *) {
     WinActivate('ahk_id' wnd_id)
     Sleep 1000
-    loop 25 {
+    loop 35 {
         Send '{Enter}'
         Sleep 500
     }
@@ -212,6 +213,26 @@ ChangeAllocate(wnd_id, *) {
     ; 轮换加点位置
     currentPoint := (currentPoint = "加点1") ? "加点2" : "加点1"
 }
+BuyUpgrade(wnd_id, *) {
+    WinActivate('ahk_id' wnd_id)
+    getX_Y("购买位置", &fx, &fy)
+    Sleep 500
+    MouseMove(fx, fy)
+    A_Clipboard := '120'
+    Sleep 500
+    loop 5 {
+        Sleep 200
+        Send '^{Tab}'
+        Sleep 500
+        MouseClick()
+        Sleep 200
+        Send "^v"
+        Sleep 200
+        Send '{Enter}'
+        Sleep 200
+    }
+}
+
 getX_Y(key, &x, &y) {
     t := IniRead('a.ini', resolution, key)
     x := Number(StrSplit(t, ' ')[1])

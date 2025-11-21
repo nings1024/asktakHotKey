@@ -9,7 +9,8 @@ if resolution == ''
     }
 getid(&wnd_id, &asktao_id)
 WinActivate(wnd_id)
-getX_Y('识界修炼',&lx,&ly)
+getX_Y('购买位置',&lx,&ly)
+
 MouseMove(lx,ly)
 
 getid(&wnd_id, &asktao_id) {
