@@ -70,6 +70,7 @@ anyAskTao() {
         myGui.Add('Button', , '登录辅助').OnEvent('Click', LoginAssist.Bind(wns[A_Index]))
         myGui.Add('Button', , '加点修改').OnEvent('Click', ChangeAllocate.Bind(wns[A_Index]))
         myGui.Add('Button', , '购买全民').OnEvent('Click', BuyUpgrade.Bind(wns[A_Index]))
+        myGui.Add('Button', , '转生奖励').OnEvent('Click', Rebirth.Bind(wns[A_Index]))
     }
 }
 
@@ -230,6 +231,51 @@ BuyUpgrade(wnd_id, *) {
         Sleep 200
         Send '{Enter}'
         Sleep 200
+    }
+}
+;   ; 转生奖励
+Rebirth(wnd_id, *) {
+    loop_5click("转生位置", wnd_id,2)
+    loop_5click("精进师门", wnd_id,2)
+    loop_5click("转生领取1", wnd_id,2)
+    loop_5click("转生领取2", wnd_id,2)
+    loop_5click("关闭位置", wnd_id,2)
+    loop_5click("玩法位置", wnd_id,2)
+    
+    loop_5click("炼剑问心", wnd_id,2)
+    loop_5click("转生领取1", wnd_id,2)
+    loop_5click("原有奖励", wnd_id,2)
+    loop_5click("转生领取2", wnd_id,2)
+    loop_5click("原有奖励", wnd_id,2)
+    loop_5click("关闭位置", wnd_id,2)
+    loop_5click("玩法位置", wnd_id,2)
+    
+    loop_5click("转生悬赏", wnd_id,2)
+    loop_5click("转生领取1", wnd_id,2)
+    loop_5click("转生领取2", wnd_id,2)
+    loop_5click("关闭位置", wnd_id,2)
+    loop_5click("玩法位置", wnd_id,2)
+    
+
+    loop_5click("转生副本", wnd_id,2)
+    loop_5click("转生领取1", wnd_id,2)
+    loop_5click("转生领取2", wnd_id,2)
+}
+
+loop_5click(pos_name, wnd_id, right := 1) {
+    WinActivate('ahk_id' wnd_id)
+    getX_Y(pos_name, &fx, &fy)
+    Sleep 500
+    MouseMove(fx, fy)
+    Sleep 500
+    loop 5 {
+        Sleep 300
+        Send '^{Tab}'
+        Sleep 500
+        loop right{
+            MouseClick()
+            Sleep 50
+        }
     }
 }
 
