@@ -1,0 +1,12 @@
+{
+    "AHK++.v2.file": {
+        "compileBaseFile": "",
+        "helpPath": "C:/Program Files/AutoHotkey/v2/AutoHotkey.chm",
+        "interpreterPath": "d:\\Program\\AutoHotkey\\v2\\AutoHotkey64.exe",
+        "maxScanDepth": 2,
+        "templateSnippetName": "AhkTemplateV2"
+    },
+    "[ini]":{
+        "files.encoding": "gbk"
+    }
+}

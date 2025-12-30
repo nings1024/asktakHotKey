@@ -71,6 +71,8 @@ anyAskTao() {
         myGui.Add('Button', , '加点修改').OnEvent('Click', ChangeAllocate.Bind(wns[A_Index]))
         myGui.Add('Button', , '购买全民').OnEvent('Click', BuyUpgrade.Bind(wns[A_Index]))
         myGui.Add('Button', , '转生奖励').OnEvent('Click', Rebirth.Bind(wns[A_Index]))
+        myGui.Add('Button', , '寻路帮派').OnEvent('Click', FindPath.Bind(wns[A_Index]))
+        myGui.Add('Button', , '集体换线').OnEvent('Click', ChangeLine.Bind(wns[A_Index]))
     }
 }
 
@@ -114,6 +116,8 @@ activeReward(wnd_id, *) {
         Sleep 200
         Send '^{Tab}'
         Sleep 500
+        Send '^b'
+        Sleep 500
         Send '{Escape}'
         Sleep 500
     }
@@ -144,6 +148,8 @@ signReward(wnd_id, *) {
     MouseMove(fx, fy)
     Sleep 500
     loop 5 {
+        Sleep 200
+        Send '^b'
         Sleep 200
         Send '^{Tab}'
         Sleep 500
@@ -235,31 +241,58 @@ BuyUpgrade(wnd_id, *) {
 }
 ;   ; 转生奖励
 Rebirth(wnd_id, *) {
-    loop_5click("转生位置", wnd_id,2)
-    loop_5click("精进师门", wnd_id,2)
-    loop_5click("转生领取1", wnd_id,2)
-    loop_5click("转生领取2", wnd_id,2)
-    loop_5click("关闭位置", wnd_id,2)
-    loop_5click("玩法位置", wnd_id,2)
-    
-    loop_5click("炼剑问心", wnd_id,2)
-    loop_5click("转生领取1", wnd_id,2)
-    loop_5click("原有奖励", wnd_id,2)
-    loop_5click("转生领取2", wnd_id,2)
-    loop_5click("原有奖励", wnd_id,2)
-    loop_5click("关闭位置", wnd_id,2)
-    loop_5click("玩法位置", wnd_id,2)
-    
-    loop_5click("转生悬赏", wnd_id,2)
-    loop_5click("转生领取1", wnd_id,2)
-    loop_5click("转生领取2", wnd_id,2)
-    loop_5click("关闭位置", wnd_id,2)
-    loop_5click("玩法位置", wnd_id,2)
-    
+    loop_5click("转生位置", wnd_id, 2)
+    loop_5click("精进师门", wnd_id, 2)
+    loop_5click("转生领取1", wnd_id, 2)
+    loop_5click("转生领取2", wnd_id, 2)
+    loop_5click("关闭位置", wnd_id, 2)
+    loop_5click("玩法位置", wnd_id, 2)
 
-    loop_5click("转生副本", wnd_id,2)
-    loop_5click("转生领取1", wnd_id,2)
-    loop_5click("转生领取2", wnd_id,2)
+    loop_5click("炼剑问心", wnd_id, 2)
+    loop_5click("转生领取1", wnd_id, 2)
+    loop_5click("原有奖励", wnd_id, 2)
+    loop_5click("转生领取2", wnd_id, 2)
+    loop_5click("原有奖励", wnd_id, 2)
+    loop_5click("关闭位置", wnd_id, 2)
+    loop_5click("玩法位置", wnd_id, 2)
+
+    loop_5click("转生悬赏", wnd_id, 2)
+    loop_5click("转生领取1", wnd_id, 2)
+    loop_5click("转生领取2", wnd_id, 2)
+    loop_5click("关闭位置", wnd_id, 2)
+    loop_5click("玩法位置", wnd_id, 2)
+
+    loop_5click("转生副本", wnd_id, 2)
+    loop_5click("转生领取1", wnd_id, 2)
+    loop_5click("转生领取2", wnd_id, 2)
+}
+
+FindPath(wnd_id, *) {
+    WinExist('ahk_id' wnd_id)
+    Sleep 500
+    loop 35 {
+        ControlSend '{Enter}'
+        Sleep 500
+    }
+}
+
+ChangeLine(wnd_id, *) {
+    WinActivate('ahk_id' wnd_id)
+    getX_Y("换线位置", &lx, &ly)
+    MouseMove(lx, ly)
+    loop 5 {
+        MouseClick()
+        Sleep 200
+        Send '{Right}'
+        Sleep 200
+        loop 10 {
+            Send "{Down}"
+        }
+        Sleep 200
+        Send '{Enter}'
+        Sleep 500
+        break
+    }
 }
 
 loop_5click(pos_name, wnd_id, right := 1) {
@@ -272,7 +305,7 @@ loop_5click(pos_name, wnd_id, right := 1) {
         Sleep 300
         Send '^{Tab}'
         Sleep 500
-        loop right{
+        loop right {
             MouseClick()
             Sleep 50
         }
