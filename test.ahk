@@ -1,6 +1,6 @@
 #SingleInstance Force
 #Requires AutoHotkey v2.0
-#Include %A_ScriptDir%\JSON.ahk
+
 ; 窗口hwnd集合
 idmap := Map()
 ; 分辨率
@@ -149,9 +149,9 @@ signReward(wnd_id, *) {
     Sleep 500
     loop 5 {
         Sleep 200
-        Send '^b'
-        Sleep 200
         Send '^{Tab}'
+        Sleep 200
+        Send '^b'
         Sleep 500
         MouseClick()
     }
@@ -331,14 +331,9 @@ XButton2:: {
     Sleep 200
     Send "{Ctrl up}"
 }
-; 重置自动回合
+
+; 集体点击
 AppsKey:: {
-    Send "!z"
-    sleep 100
-    Send "!z"
-}
-; 恢复
-^AppsKey:: {
     Sleep 500
     loop 5 {
         MouseClick()
@@ -354,4 +349,9 @@ AppsKey:: {
 getid(&wnd_id, &asktao_id) {
     wnd_id := WinGetList('ahk_class AtTabWnd')[1]
     asktao_id := WinGetControlsHwnd('ahk_id ' wnd_id)[1]
+}
+
+CapsLock:: {
+    Run A_ScriptFullPath  ; 重新运行当前脚本
+    ExitApp               ; 退出当前实例
 }
