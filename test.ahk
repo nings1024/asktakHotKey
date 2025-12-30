@@ -1,6 +1,6 @@
 #SingleInstance Force
 #Requires AutoHotkey v2.0
-#Include %A_ScriptDir%\JSON.ahk
+
 ; 窗口hwnd集合
 idmap := Map()
 ; 分辨率
