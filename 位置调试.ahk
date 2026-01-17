@@ -9,7 +9,7 @@ if resolution == ''
     }
 getid(&wnd_id, &asktao_id)
 WinActivate(wnd_id)
-getX_Y('玩法位置', &lx, &ly)
+getX_Y('一键自动', &lx, &ly)
 MouseMove(lx, ly)
 getid(&wnd_id, &asktao_id) {
     wnd_id := WinGetList('ahk_class AtTabWnd')[1]
