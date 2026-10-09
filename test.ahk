@@ -249,7 +249,7 @@ Rebirth(wnd_id, *) {
     loop_5click("玩法位置", wnd_id, 2)
 
     loop_5click("炼剑问心", wnd_id, 2)
-    loop_5click("转生领取1", wnd_id, 2)
+    loop_5clickEnter("转生领取1", wnd_id, 2)
     loop_5click("原有奖励", wnd_id, 2)
     loop_5click("转生领取2", wnd_id, 2)
     loop_5click("原有奖励", wnd_id, 2)
@@ -311,6 +311,27 @@ loop_5click(pos_name, wnd_id, right := 1) {
         }
     }
 }
+
+
+loop_5clickEnter(pos_name, wnd_id, right := 1) {
+    WinActivate('ahk_id' wnd_id)
+    getX_Y(pos_name, &fx, &fy)
+    Sleep 500
+    MouseMove(fx, fy)
+    Sleep 500
+    loop 5 {
+        Sleep 300
+        Send '^{Tab}'
+        Sleep 500
+        loop right {
+            MouseClick()
+            Sleep 50
+            Send '{Enter}'
+            Sleep 50
+        }
+    }
+}
+
 
 getX_Y(key, &x, &y) {
     t := IniRead('a.ini', resolution, key)
